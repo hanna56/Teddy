@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang = "ko">
+	<head>
+		<title>글의 감정과 어울리는 캘리그라피와 사진 추천</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{url_for('static', filename = "assets/css/main.css")}}" />
+		<link rel="stylesheet" href="{{url_for('static', filename = "assets/css/unsplash.css")}}" />
+		<noscript><link rel="stylesheet" href= "{{url_for('static', filename = "assets/css/noscript.css")}}" /></noscript>
+
+		<link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Single+Day&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
+
+		<style type="text/css">
+		.singleday { font-family: 'Single Day'; }
+		.blackhansans { font-family: 'Black Han Sans';}
+		.songmyung { font-family: 'Song Myung';}
+		.gaegu { font-family: 'Gaegu';}
+		.poortstory { font-family: 'Poor Story';}
+		.stylish { font-family: 'Stylish';}
+		.yeonsung { font-family: 'Yeon Sung';}
+		@font-face {
+			font-family: "곰신체"; 
+			src: url("./static/fonts/나눔손글씨 곰신체.ttf");
+		}
+
+		@font-face {
+			font-family: "아빠글씨"; 
+			src: url("./static/fonts/나눔손글씨 아빠글씨.ttf");
+		}
+
+		@font-face {
+			font-family: "엉겅퀴체"; 
+			src: url("./static/fonts/나눔손글씨 엉겅퀴체.ttf");
+		}
+
+		@font-face {
+			font-family: "유니 띵땅띵땅"; 
+			src: url("./static/fonts/나눔손글씨 유니 띵땅띵땅.ttf");
+		}
+
+		@font-face {
+			font-family: "나눔손글씨 안쌍체"; 
+			src: url("./static/fonts/나눔손글씨 안쌍체.ttf");
+		}
+
+
+		p.sad1{font-family: "손편지체", serif;}
+		p.sad1{font-size: 30px;}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class = "wrap">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="/" class="logo">Teddy</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="/">This is Teddy</a></li>
+							<li class="active"><a href="/findemo">추천 받기</a></li>
+							<li><a href="/aboutus">About us</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://github.com/hanna56/Teddy" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class = "main1">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1><a href="/findemo">글의 감정과 주제에 어울리는<br />
+									폰트와 이미지 추천</a></h1>
+								</header>
+								
+                                
+								<dl>
+									<h3>텍스트</h3>
+									<dd>
+										<p id="user_text" style="font-size:25px;">{{ Output_text }}</p>
+									</dd>
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+								</dl>
+
+								<!-- canvas -->
+								<h3> 감정 Profile </h3>
+								<div class='chart-view' style = " margin-right: 10px;text-align: center;">
+									
+									<div class = 'chart-container' style="position: relative; height: 500px; width:500px; display:inline-block">
+									<canvas id = "profileChart"></canvas>
+									<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+									<script>
+										var score_data = {{score}};
+										var ctx = document.getElementById('profileChart');
+										console.log(score_data)
+										
+										// 백분위수로 나타내기 
+										const result = score_data.reduce(function add(sum, currValue) {
+											return sum + currValue;
+										  }, 0);
+
+										const labels = ['공포', '기쁨', '분노', '사랑', '슬픔'];
+										const data = {
+										labels: labels,
+										datasets: [
+											{
+											label: '글의 감정 Profile',
+											data: score_data,
+											borderColor: 'rgb(156, 136, 255)',
+											backgroundColor: 'rgba(156, 136, 255, 0.5)',
+											pointHitRadius: 10
+											}
+										]
+										};
+										
+										// <block:config:0>
+										var profileChart = new Chart(ctx, {
+										type: 'radar',
+										data: data,
+										options: {
+											responsive: true,
+											plugins: {
+											title: {
+												text: '감정 profile',
+												fontSize : 30
+											}
+											},
+											legend: {
+												text: '해당 글의 감정 분포'
+											},
+											scale :{
+												pointLabels: {
+													fontSize: 18
+												},
+												ticks:{
+													stepSize: 1
+												}
+											}
+										},
+										});
+									</script>
+								</div>
+								
+							</div>
+							
+
+								
+								
+							<div class = "recommendation">
+								<h3 style="font-size: 40px; display: inline-block;">{{ Result }}</h3>
+								<h3 style="display: inline-block;"> 감정과 어울리는 글씨체 추천</h3>
+
+								{% if Result == "슬픔" %}
+									<dl>
+										<dd>					
+											<button type="button" style="font-family: 나눔손글씨 아빠의 연애편지 ; font-size:1.3em; vertical-align: 4px"
+											onclick="document.getElementById('user_text').style.fontFamily = '나눔손글씨 아빠의 연애편지'">
+											아빠의 연애편지</button>
+
+											<button type="button" style="font-family: Yeon Sung ; font-size:1em; vertical-align: 7px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Yeon Sung'">
+											Yeon Sung</button>
+								
+											<button type="button" style="font-family: 나눔손글씨 대광유리 ; font-size:1.3em; vertical-align: 4.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = '나눔손글씨 대광유리'">
+											대광유리</button>
+
+											<button type="button" style="font-family: 나눔손글씨 엉겅퀴체 ; font-size:1.3em; vertical-align: 4.5px"
+                                            onclick="document.getElementById('user_text').style.fontFamily = '나눔손글씨 엉겅퀴체'">
+                                            엉겅퀴체</button>
+
+										</dd>
+									</dl>
+									<h3 style="display: inline-block;"> 슬픔 감정과 어울리는 배경 음악 추천</h3>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 1: Betterdays</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/sadness/bensound-betterdays.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 2: November</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/sadness/bensound-november.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 3: Tomorrow</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/sadness/bensound-tomorrow.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 4: Sad Day</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/sadness/bensound-sadday.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p float:left>Music 5: Ofelias Dream</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/sadness/bensound-ofeliasdream.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+
+								{% elif Result == "공포" %}
+									<dl>
+										<dd>
+											<button type="button" style="font-family: Song Myung ; font-size:0.7em; vertical-align: 4px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Song Myung'">
+											Song Myung</button>
+
+											<button type="button" style="font-family: Dokdo Regular ; font-size:1em; vertical-align: 3.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Dokdo Regular'">
+											Dokdo</button>
+
+											<button type="button" style="font-family: East Sea Dokdo Regular ; font-size:1em; vertical-align: 3.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'East Sea Dokdo Regular'">
+											East Sea Dokdo</button>
+
+											<button type="button" style="font-family: 나눔손글씨 아빠글씨 ; font-size:1em; vertical-align: 2.5px"
+                                 onclick="document.getElementById('user_text').style.fontFamily = '나눔손글씨 아빠글씨'">
+                                 아빠글씨</button>
+				
+										</dd>
+									</dl>
+									<h3 style="display: inline-block;"> 공포 감정과 어울리는 배경 음악 추천</h3>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 1: Scifi</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/fear/bensound-scifi.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 2: Labyrinth of Lost Dreams</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/fear/Labyrinth-of-Lost-Dreams-MP3.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 3: Dark Forest</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/fear/dark-forest.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 4: To Start Again</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/fear/Monplaisir_-_17_-_To_Start_Again.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p float:left>Music 5: The Witch Are Going Magical</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/fear/Loyalty_Freak_Music_-_10_-_The_Witch_Are_Going_Magical.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+
+								{% elif Result == "기쁨" %}
+									<dl>
+										
+										<dd>
+											<button type="button" style="font-family: Gaegu ; font-size:1em; vertical-align: 4.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Gaegu'">
+											Gaegu</button>
+
+											<button type="button" style="font-family: Poor Story ; font-size:1em; vertical-align: 4px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Poor Story'">
+											Poor Story</button>
+
+											<button type="button" style="font-family: Stylish ; font-size:1em; vertical-align: 3px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Stylish'">
+											Stylish</button>
+
+											<button type="button" style="font-family: 나눔손글씨 유니 띵땅띵땅 ; font-size:1.3em; vertical-align: 0.1px"
+                                 onclick="document.getElementById('user_text').style.fontFamily = '나눔손글씨 유니 띵땅띵땅'">
+                                 유니 띵땅띵땅</button>
+
+										</dd>
+									</dl>
+									<h3 style="display: inline-block;"> 기쁨 감정과 어울리는 배경 음악 추천</h3>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 1: Clearday</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/joy/bensound-clearday.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 2: Hey</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/joy/bensound-hey.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 3: Sunny</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/joy/bensound-sunny.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 4: Raising Me Higher</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/joy/mixkit-raising-me-higher-34.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p float:left>Music 5: Summer Mood</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/joy/summer-mood-c-5565.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+								{% elif Result == "분노" %}
+									<dl>
+										
+										<dd>
+											<button type="button" style="font-family: 전주 완판본 각L ; font-size:0.7em; vertical-align: 4.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = '전주 완판본 각L'">
+											전주 완판본 각L</button>
+
+											<button type="button" style="font-family: UhBee freak researcher minani ; font-size:0.7em; vertical-align: 4.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'UhBee freak researcher minani'">
+											괴짜 연구원</button>
+
+											<button type="button" style="font-family: Black Han Sans ; font-size:0.7em; vertical-align: 4.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Black Han Sans'">
+											Black Han Sans</button>
+
+											<button type="button" style="font-family: 나눔손글씨 안쌍체 ; font-size:1em; vertical-align: 1px"
+                                 onclick="document.getElementById('user_text').style.fontFamily = '나눔손글씨 안쌍체'">
+                                 안쌍체</button>
+
+										</dd>
+									</dl>
+									
+									<h3 style="display: inline-block;"> 분노 감정과 어울리는 배경 음악 추천</h3>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 1: Dramatic Intense</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/anger/dramatic-intense-trailer-5062.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 2: Dubstep</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/anger/dubstep-trap-4350.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 3:  Decisive Move</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/anger/Komiku_-_19_-_Action_Decisive_Move.mp3" type="audio/mp3"> 
+                                 </audio>
+
+                                 <p>Music 4: Green Pig</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/anger/Soft_and_Furious_-_06_-_Green_Pig-1.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p folat:left>Music 5: Under Pressure</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/anger/under-pressure-michael-kobrin-105bpm-3781.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+								{% elif Result == "사랑" %}
+									<dl>
+										
+										<dd>
+											<button type="button" style="font-family: 배달의민족 연성 ; font-size:1em; vertical-align: 3px"
+											onclick="document.getElementById('user_text').style.fontFamily = '배달의민족 연성'">
+											배달의민족 연성</button>
+											
+											<button type="button" style="font-family: Single Day; font-size:1em; vertical-align: 2px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Single Day'">
+											Single Day</button>
+
+											<button type="button" style="font-family: Nanum SonPyeonJiCe ; font-size:1.5em; vertical-align: -3.5px"
+											onclick="document.getElementById('user_text').style.fontFamily = 'Nanum SonPyeonJiCe'">
+											손편지체</button>
+
+											<button type="button" style="font-family: 곰신체; font-size:1.5em; vertical-align: -3.5px"
+                                 onclick="document.getElementById('user_text').style.fontFamily = '곰신체'">
+                                 곰신체</button>
+
+										</dd>
+									</dl>
+									<h3 style="display: inline-block;"> 사랑 감정과 어울리는 배경 음악 추천</h3>
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 1: Love</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/love/bensound-love.mp3" type="audio/mp3"> 
+                                 </audio>
+                                 <p>Music 2: Piano Reverie Ambient</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/love/piano-reverie-ambient-piano-chill-music-3895.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p>Music 3: Romantic</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/love/bensound-romantic.mp3" type="audio/mp3"> 
+                                 </audio>
+                                 
+                                 <p>Music 4: Simple Ballad For You</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/love/simple-ballad-for-you-1562.mp3" type="audio/mp3"> 
+                                 </audio>
+                                 
+                              </div>
+
+                              <div style="display:flex; column-gap: 35px;">
+                                 <p float:left>Music 5: Latin Lovers</p> 
+                                 <audio controls> 
+                                    <source src="./static/audios/love/mixkit-latin-lovers-39.mp3" type="audio/mp3"> 
+                                 </audio>
+                              </div>
+								{% endif %}
+
+								<h3>글의 주요 키워드를 통한 이미지 추천</h3>
+								<dl>
+                                    <dd>
+                                        {%for i in keywords%}
+                                        <button class="keyword">{{i}}</button>
+                                        {% endfor %}
+										{%for i,j in combi%}
+                                        <button class="keyword">{{i}} & {{j}}</button>
+                                        {% endfor %}
+                                    </dd>
+                                </dl>
+								
+								<div class="loading">Loading...</div>
+								<div class="wrapper">
+									<div id="response-container" data-columns></div>
+								</div>
+							</section>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>90, Cheongpa-ro 47-gil Yongsan-gu Seoul,<br />
+								Republic of Korea, 04310</p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">nohyujin99@sookmyung.ac.kr</a><br />
+								<a href="#">hannapark56@sookmyung.ac.kr</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="https://github.com/hanna56/Teddy" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/jquery.min.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/jquery.scrollex.min.js")}}" ></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/jquery.scrolly.min.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/browser.min.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/breakpoints.min.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/util.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/main.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/unsplash_search.js")}}"></script>
+			<script type ='text/javascript' src= "{{url_for('static', filename = "assets/js/masonry.pkgd.js")}}"></script>
+	</body>
+</html>

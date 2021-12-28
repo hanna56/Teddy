@@ -1,0 +1,38 @@
+/*** Response Container ***/
+#response-container {
+    margin-top: 2em;
+}
+
+/*** Image Styline ***/
+figure {
+    margin: 2px;
+    position: relative;
+}
+
+figure img {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: calc(100% - 2em) !important;
+    height : auto;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
+figcaption {
+    bottom: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0.8em 1.4em;
+    width: calc(100% - 2em) !important;
+    position: absolute;
+}
+
+figcaption > p {
+    margin-top: 0;
+    margin-bottom: 4px ;
+}
+
+figcaption > p > a{
+    color: white;
+}
